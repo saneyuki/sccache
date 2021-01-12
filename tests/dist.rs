@@ -80,12 +80,12 @@ fn test_dist_basic() {
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
 
     get_stats(|info| {
-        assert_eq!(1, info.stats.dist_compiles.values().sum::<usize>());
-        assert_eq!(0, info.stats.dist_errors);
-        assert_eq!(1, info.stats.compile_requests);
-        assert_eq!(1, info.stats.requests_executed);
-        assert_eq!(0, info.stats.cache_hits.all());
-        assert_eq!(1, info.stats.cache_misses.all());
+        assert_eq!(1, info.stats.dist_compiles.values().sum::<usize>(), "expected {} but {}", 1, info.stats.dist_compiles.values().sum::<usize>());
+        assert_eq!(0, info.stats.dist_errors, "expected {} but {}", 0, info.stats.dist_errors);
+        assert_eq!(1, info.stats.compile_requests, "expected {} but {}", 1, info.stats.compile_requests);
+        assert_eq!(1, info.stats.requests_executed, "failed on info.stats.requests_executed");
+        assert_eq!(0, info.stats.cache_hits.all(), "failed on info.stats.cache_hits.all()");
+        assert_eq!(1, info.stats.cache_misses.all(), "failed on info.stats.cache_misses.all()");
     });
 }
 
