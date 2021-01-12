@@ -80,8 +80,8 @@ fn test_dist_basic() {
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
 
     get_stats(|info| {
-        println!("stdout: {}", info);
-        eprintln!("stderr: {}", info);
+        println!("stdout: {:#?}", info);
+        eprintln!("stderr: {:#?}", info);
         assert_eq!(1, info.stats.dist_compiles.values().sum::<usize>(), "expected {} but {}", 1, info.stats.dist_compiles.values().sum::<usize>());
         assert_eq!(0, info.stats.dist_errors, "expected {} but {}", 0, info.stats.dist_errors);
         assert_eq!(1, info.stats.compile_requests, "expected {} but {}", 1, info.stats.compile_requests);
@@ -118,8 +118,8 @@ fn test_dist_restartedserver() {
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
 
     get_stats(|info| {
-        println!("stdout: {}", info);
-        eprintln!("stderr: {}", info);
+        println!("stdout: {:#?}", info);
+        eprintln!("stderr: {:#?}", info);
         assert_eq!(2, info.stats.dist_compiles.values().sum::<usize>());
         assert_eq!(0, info.stats.dist_errors);
         assert_eq!(2, info.stats.compile_requests);
@@ -152,8 +152,8 @@ fn test_dist_nobuilder() {
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
 
     get_stats(|info| {
-        println!("stdout: {}", info);
-        eprintln!("stderr: {}", info);
+        println!("stdout: {:#?}", info);
+        eprintln!("stderr: {:#?}", info);
         assert_eq!(0, info.stats.dist_compiles.values().sum::<usize>());
         assert_eq!(1, info.stats.dist_errors);
         assert_eq!(1, info.stats.compile_requests);
@@ -220,8 +220,8 @@ fn test_dist_failingserver() {
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
 
     get_stats(|info| {
-        println!("stdout: {}", info);
-        eprintln!("stderr: {}", info);
+        println!("stdout: {:#?}", info);
+        eprintln!("stderr: {:#?}", info);
         assert_eq!(0, info.stats.dist_compiles.values().sum::<usize>());
         assert_eq!(1, info.stats.dist_errors);
         assert_eq!(1, info.stats.compile_requests);
