@@ -66,28 +66,68 @@ fn test_dist_basic() {
     let tmpdir = tmpdir.path();
     let sccache_dist = harness::sccache_dist_path();
 
+    println!("debug: 1");
+
     let mut system = harness::DistSystem::new(&sccache_dist, tmpdir);
     system.add_scheduler();
+    println!("debug: 2");
+
     system.add_server();
+
+    println!("debug: 3");
 
     let sccache_cfg = dist_test_sccache_client_cfg(tmpdir, system.scheduler_url());
     let sccache_cfg_path = tmpdir.join("sccache-cfg.json");
     write_json_cfg(tmpdir, "sccache-cfg.json", &sccache_cfg);
     let sccache_cached_cfg_path = tmpdir.join("sccache-cached-cfg");
 
+    println!("debug: 4");
+
     stop_local_daemon();
+    println!("debug: 5");
+
     start_local_daemon(&sccache_cfg_path, &sccache_cached_cfg_path);
+
+    println!("debug: 6");
+
     basic_compile(tmpdir, &sccache_cfg_path, &sccache_cached_cfg_path);
+
+    println!("debug: 7");
 
     get_stats(|info| {
         println!("stdout: {:#?}", info);
         eprintln!("stderr: {:#?}", info);
-        assert_eq!(1, info.stats.dist_compiles.values().sum::<usize>(), "expected {} but {}", 1, info.stats.dist_compiles.values().sum::<usize>());
-        assert_eq!(0, info.stats.dist_errors, "expected {} but {}", 0, info.stats.dist_errors);
-        assert_eq!(1, info.stats.compile_requests, "expected {} but {}", 1, info.stats.compile_requests);
-        assert_eq!(1, info.stats.requests_executed, "failed on info.stats.requests_executed");
-        assert_eq!(0, info.stats.cache_hits.all(), "failed on info.stats.cache_hits.all()");
-        assert_eq!(1, info.stats.cache_misses.all(), "failed on info.stats.cache_misses.all()");
+        assert_eq!(
+            1,
+            info.stats.dist_compiles.values().sum::<usize>(),
+            "expected {} but {}",
+            1,
+            info.stats.dist_compiles.values().sum::<usize>()
+        );
+        assert_eq!(
+            0, info.stats.dist_errors,
+            "expected {} but {}",
+            0, info.stats.dist_errors
+        );
+        assert_eq!(
+            1, info.stats.compile_requests,
+            "expected {} but {}",
+            1, info.stats.compile_requests
+        );
+        assert_eq!(
+            1, info.stats.requests_executed,
+            "failed on info.stats.requests_executed"
+        );
+        assert_eq!(
+            0,
+            info.stats.cache_hits.all(),
+            "failed on info.stats.cache_hits.all()"
+        );
+        assert_eq!(
+            1,
+            info.stats.cache_misses.all(),
+            "failed on info.stats.cache_misses.all()"
+        );
     });
 }
 
